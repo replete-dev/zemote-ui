@@ -15,6 +15,88 @@
     <link href="css/plugins.css" rel="stylesheet">
     <link href="css/style.css" rel="stylesheet">
     <link href="css/responsive.css" rel="stylesheet">
+    
+
+    <script>
+        function initComparisons() {
+            var x, i;
+            /*find all elements with an "overlay" class:*/
+            x = document.getElementsByClassName("img-comp-overlay");
+            for (i = 0; i < x.length; i++) {
+                /*once for each "overlay" element:
+                pass the "overlay" element as a parameter when executing the compareImages function:*/
+                compareImages(x[i]);
+            }
+            function compareImages(img) {
+                var slider, img, clicked = 0, w, h;
+                /*get the width and height of the img element*/
+                w = img.offsetWidth;
+                h = img.offsetHeight;
+                /*set the width of the img element to 50%:*/
+                img.style.width = (w / 2) + "px";
+                /*create slider:*/
+                slider = document.createElement("DIV");
+                slider.setAttribute("class", "img-comp-slider");
+                /*insert slider*/
+                img.parentElement.insertBefore(slider, img);
+                /*position the slider in the middle:*/
+                slider.style.top = (h / 2) - (slider.offsetHeight / 2) + "px";
+                slider.style.left = (w / 2) - (slider.offsetWidth / 2) + "px";
+                /*execute a function when the mouse button is pressed:*/
+                slider.addEventListener("mousedown", slideReady);
+                /*and another function when the mouse button is released:*/
+                window.addEventListener("mouseup", slideFinish);
+                /*or touched (for touch screens:*/
+                slider.addEventListener("touchstart", slideReady);
+                /*and released (for touch screens:*/
+                window.addEventListener("touchstop", slideFinish);
+                function slideReady(e) {
+                    /*prevent any other actions that may occur when moving over the image:*/
+                    e.preventDefault();
+                    /*the slider is now clicked and ready to move:*/
+                    clicked = 1;
+                    /*execute a function when the slider is moved:*/
+                    window.addEventListener("mousemove", slideMove);
+                    window.addEventListener("touchmove", slideMove);
+                }
+                function slideFinish() {
+                    /*the slider is no longer clicked:*/
+                    clicked = 0;
+                }
+                function slideMove(e) {
+                    var pos;
+                    /*if the slider is no longer clicked, exit this function:*/
+                    if (clicked == 0) return false;
+                    /*get the cursor's x position:*/
+                    pos = getCursorPos(e)
+                    /*prevent the slider from being positioned outside the image:*/
+                    if (pos < 0) pos = 0;
+                    if (pos > w) pos = w;
+                    /*execute a function that will resize the overlay image according to the cursor:*/
+                    slide(pos);
+                }
+                function getCursorPos(e) {
+                    var a, x = 0;
+                    e = e || window.event;
+                    /*get the x positions of the image:*/
+                    a = img.getBoundingClientRect();
+                    /*calculate the cursor's x coordinate, relative to the image:*/
+                    x = e.pageX - a.left;
+                    /*consider any page scrolling:*/
+                    x = x - window.pageXOffset;
+                    return x;
+                }
+                function slide(x) {
+                    /*resize the image:*/
+                    img.style.width = x + "px";
+                    /*position the slider:*/
+                    slider.style.left = img.offsetWidth - (slider.offsetWidth / 2) + "px";
+                }
+            }
+        }
+    </script>
+
+
 </head>
 
 <body class="no-page-loader">
@@ -67,7 +149,6 @@
 
                                 <div class="container-fluid drop-mega-menu">
                                     <div class="row">
-
 
                                         <ul class="nav nav-tabs">
                                             <li class="active"><a data-toggle="tab" href="#home">touch switch</a></li>
@@ -161,36 +242,25 @@
                                                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
 
                                                         <ul>
-                                                            <li class="col-lg-offset-3 col-lg-1" align="center">
-                                                                    <a href="switchboard-module.html">
-                                                                <img src="images/Dropdown-images/LEDStripDimmer.png"
+                                                            <li class="col-lg-offset-4 col-lg-1" align="center">
+                                                                    <a href="#">
+                                                                <img src="images/TabBarImages/Lighting/12VLEDStripDimmer.png"
                                                                     alt="">
-                                                                <p align="center">LED Strip Dimmer</p></a>
+                                                                <p align="center">12V LED Strip Dimmer</p></a>
                                                             </li>
                                                             <li class="col-lg-1" align="center">
-                                                                    <a href="switchboard-module.html">
-                                                                <img src="images/Dropdown-images/LightFanModule.png"
+                                                                    <a href="#">
+                                                                <img src="images/TabBarImages/Lighting/DimmableLEDDriver.png"
                                                                     alt="">
-                                                                <p align="center">Light Fan Moduler</p></a>
+                                                                <p align="center">Dimmable LED Driver</p></a>
                                                             </li>
                                                             <li class="col-lg-1" align="center">
-                                                                    <a href="switchboard-module.html">
-                                                                <img src="images/Dropdown-images/LightModule.png"
+                                                                    <a href="#">
+                                                                <img src="images/TabBarImages/Lighting/RGBController.png"
                                                                     alt="">
-                                                                <p align="center">Light Module</p></a>
+                                                                <p align="center">RGB Controller</p></a>
                                                             </li>
-                                                            <li class="col-lg-1" align="center">
-                                                                    <a href="switchboard-module.html">
-                                                                <img src="images/Dropdown-images/CurtainController2Channel.png"
-                                                                    alt="">
-                                                                <p align="center">Curtain Controller 2 Channel</p></a>
-                                                            </li>
-                                                            <li class="col-lg-1" align="center">
-                                                                    <a href="switchboard-module.html">
-                                                                <img src="images/Dropdown-images/CurtainController4Channel.png"
-                                                                    alt="">
-                                                                <p align="center">Curtain Controller 4 Channel</p></a>
-                                                            </li>
+                                                            
                                                         </ul>
 
                                                     </div>
@@ -205,32 +275,71 @@
                                             </div>
                                             <div id="menu2" class="tab-pane fade">
                                                 <div class="row tab-drp">
-                                                    <ul>
-                                                        <li class="col-lg-offset-3 col-lg-1" align="center">
-                                                                <a href="#">
-                                                            <img src="images/tabs-img.png" alt="">
-                                                            <p align="center">Sur</p></a>
-                                                        </li>
+                                                    <ul class="smrt-swt-ul">
+                                                        <!--   <li class="col-lg-1"></li>-->
                                                         <li class="col-lg-1" align="center">
-                                                                <a href="#">
-                                                            <img src="images/tabs-img.png" alt="">
-                                                            <p align="center">Sur</p></a>
-                                                        </li>
-                                                        <li class="col-lg-1" align="center">
-                                                                <a href="#">
-                                                            <img src="images/tabs-img.png" alt="">
-                                                            <p align="center">Sur</p></a>
-                                                        </li>
-                                                        <li class="col-lg-1" align="center">
-                                                                <a href="#">
-                                                            <img src="images/tabs-img.png" alt="">
-                                                            <p align="center">Sur</p>
+                                                            <a href="switchboard-module.html">
+                                                                <img src="images/TabBarImages/smart-switch/2LM-NonDimming.png" alt="">
+                                                                <p align="center">2LM Non Dimming</p>
                                                             </a>
                                                         </li>
                                                         <li class="col-lg-1" align="center">
-                                                                <a href="#">
-                                                            <img src="images/tabs-img.png" alt="">
-                                                            <p align="center">Sur</p></a>
+                                                            <a href="switchboard-module.html">
+                                                                <img src="images/TabBarImages/smart-switch/3LF.png" alt="">
+                                                                <p align="center">3LF</p>
+                                                            </a>
+                                                        </li>
+                                                        <li class="col-lg-1" align="center">
+                                                            <a href="switchboard-module.html">
+                                                                <img src="images/TabBarImages/smart-switch/4LM-NonDimming.png" alt="">
+                                                                <p align="center">4LM Non Dimming</p>
+                                                            </a>
+                                                        </li>
+                                                        <li class="col-lg-1" align="center">
+                                                            <a href="switchboard-module.html">
+                                                                <img src="images/TabBarImages/smart-switch/CurtainController2Channel.png" alt="">
+                                                                <p align="center">Curtain Controller 2 Channel</p>
+                                                            </a>
+                                                        </li>
+                                                        <li class="col-lg-1" align="center">
+                                                            <a href="switchboard-module.html">
+                                                                <img src="images/TabBarImages/smart-switch/CurtainController4Channel.png" alt="">
+                                                                <p align="center">Curtain Controller 4 Channel</p>
+                                                            </a>
+                                                        </li>
+                                                        <li class="col-lg-1" align="center">
+                                                            <a href="switchboard-module.html">
+                                                                <img src="images/TabBarImages/smart-switch/DoorLockModule.png" alt="">
+                                                                <p align="center">Door Lock Module</p>
+                                                            </a>
+                                                        </li>
+                                                        <li class="col-lg-1" align="center">
+                                                            <a href="switchboard-module.html">
+                                                                <img src="images/TabBarImages/smart-switch/DryContactModule.png" alt="">
+                                                                <p align="center">Dry Contact Module</p>
+                                                            </a>
+                                                        </li>
+                                                        <li class="col-lg-1" align="center">
+                                                            <a href="switchboard-module.html">
+                                                                <img src="images/TabBarImages/smart-switch/L2M-PhaseCutDimming.png" alt="">
+                                                                <p align="center">L2M Phase Cut Dimming</p>
+                                                            </a>
+                                                        </li>
+                                                        <li class="col-lg-1" align="center">
+                                                            <a href="switchboard-module.html">
+                                                                <img src="images/TabBarImages/smart-switch/L2M-ZemoteDimming.png" alt="">
+                                                                <p align="center">L2M Zemote Dimming</p>
+                                                            </a>
+                                                        </li>
+                                                        <li class="col-lg-1" align="center">
+                                                            <a href="switchboard-module.html">
+                                                                <img src="images/TabBarImages/smart-switch/LightFanModule.png" alt="">
+                                                                <p align="center">Light Fan Module</p></a>
+                                                        </li>
+                                                        <li class="col-lg-1" align="center">
+                                                            <a href="switchboard-module.html">
+                                                                <img src="images/TabBarImages/smart-switch/PowerModule.png" alt="">
+                                                                <p align="center">Power Module</p></a>
                                                         </li>
                                                     </ul>
 
@@ -285,29 +394,29 @@
                                                     <ul>
                                                         <li class="col-lg-offset-3 col-lg-1" align="center">
                                                             <a href="sur-product.html">
-                                                            <img src="images/Dropdown-images/MiniSUR.png" alt="">
+                                                            <img src="images/TabBarImages/SUR/MiniSUR.png" alt="">
                                                             <p align="center">Mini SUR</p></a>
                                                         </li>
                                                         <li class="col-lg-1" align="center">
                                                                 <a href="sur-product.html">
-                                                            <img src="images/Dropdown-images/SmartUniversalRemote-Pro.png"
+                                                            <img src="images/TabBarImages/SUR/SUR_PRO.png"
                                                                 alt="">
                                                             <p align="center">Smart Universal Remote-Pro</p></a>
                                                         </li>
                                                         <li class="col-lg-1" align="center">
                                                                 <a href="sur-product.html">
-                                                            <img src="images/Dropdown-images/SmartUniversalRemote-W.png"
+                                                            <img src="images/TabBarImages/SUR/SUR_W.png"
                                                                 alt="">
                                                             <p align="center">Smart Universal Remote-W</p></a>
                                                         </li>
                                                         <li class="col-lg-1" align="center">
                                                                 <a href="sur-product.html">
-                                                            <img src="images/Dropdown-images/surplus.png" alt="">
+                                                            <img src="images/TabBarImages/SUR/SUR_PRO.png" alt="">
                                                             <p align="center">SUR plus</p></a>
                                                         </li>
                                                         <li class="col-lg-1" align="center">
                                                                 <a href="sur-product.html">
-                                                            <img src="images/Dropdown-images/SUR.png" alt="">
+                                                            <img src="images/TabBarImages/SUR/SUR.png" alt="">
                                                             <p align="center">SUR</p></a>
                                                         </li>
                                                     </ul>
@@ -382,7 +491,6 @@
                                                 </div>
                                             </div>
                                         </div>
-
 
                                     </div>
                                 </div>
@@ -465,11 +573,11 @@
         <!-- Banner -->
 
         <section class="banner"
-            style="background-image: url(images/Touch-switch/touch-banner.png); background-repeat: no-repeat; background-size: cover; background-position: center;">
+            style="background-image: url(images/Touch-switch/touch-banner.jpg); background-repeat: no-repeat; background-size: cover; background-position: center;">
             <div class="container cont-pad">
                 <div class="row">
                     <div class="col-lg-12 col-pad">
-                        <!-- <img src="images/SUR-product/banner.JPG" alt=""> -->
+                         <img src="images/Touch-switch/8M_Black_Silver_Blue_Glow.png" alt=""> 
                         <div class="ban-text">
                             <h4>worlds 1st modular switch</h4>
                             <p>Manually activate or deactivate any device and actions within the ZEMOTE System</p>
@@ -481,124 +589,117 @@
 
         <!-- Banner section ends -->
 
-        <section class="video" style="background-image: url(images/SUR-product/video-bg.png);">
+        <section class="video tch-gfg">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <h4>Watch the video</h4>
-                        <a href="#">
-                            <img src="images/Doorlock/play-button.png" alt="">
-                        </a>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">                       
+                            <img src="images/Touch-switch/EXPLODEDVIEW-min.jpg" alt="">
                     </div>
                 </div>
             </div>
         </section>
 
-        <section class="banner"
-            style="background-image: url(images/Touch-switch/customize-switch.png); background-repeat: no-repeat; background-size: cover; background-position: center;">
-            <div class="container cont-pad">
-                <div class="row">
-                    <div class="col-lg-12 col-pad">
-                        <!-- <img src="images/SUR-product/banner.JPG" alt=""> -->
-                        <div class="ban-text">
-                            <h4>customized your switch</h4>
-                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt
-                                ut labore</p>
-                        </div>
+        <section class="banner stch-swp"
+            style="background-image: url(images/Touch-switch/customize-switch.jpg); background-repeat: no-repeat; background-size: cover; background-position: center;">
+               
+<div class="container vc-ctl rgb-vc t-of-lgt gal-sec">
+                    <div class="mySwitchSlides">
+                        <img src="images/Touch-switch/AllSize/8M_Plain_Black_Glass.png" alt="" style="width:100%">
                     </div>
-                </div>
-            </div>
+    
+                    <div class="mySwitchSlides">
+                        <img src="images/Touch-switch/AllSize/8M_Plain_White_Glass.png" style="width:100%">
+                    </div>
+    
+                    <div class="mySwitchSlides">
+                        <img src="images/Touch-switch/AllSize/8M_Plain_Black_Stone.png" style="width:100%">
+                    </div>
+    
+                    <div class="mySwitchSlides">
+                        <img src="images/Touch-switch/AllSize/8M_Plain_Black_Wood.png" style="width:100%">
+                    </div>
+    
+                    <div class="mySwitchSlides">
+                        <img src="images/Touch-switch/AllSize/8M_Black_Blue_Glow.png" style="width:100%">
+                    </div>
+    
+                    <div class="mySwitchSlides">
+                        <img src="images/Touch-switch/AllSize/8M_White_Yellow_Glow.png" style="width:100%">
+                    </div>
+    
+    
+                   
+    
+    
+                </div><!-- gal-sec -->
+
         </section>
 
-        <section class="hue">
-            <div class="container">
-                <div class="row">
-                    <div class="col-lg-12 col-md-12">
-                        <div class="hue-col">
-                            <div class="hue-range">
-                                <input name="hue" type="range" min="1" max="300" value="130">
-                            </div>
-                        </div>
+        <section class="hue swict-hue">
+            <div class="container-fluid" style="background: #1c1c1c;">
+                <div class="row gal-slid switch-slide">
+                    <div class="column swt-col">
+                        <img class="switch-demo cursor" src="images/Touch-switch/AllSize/BlackGlass.png" style="width:100%"
+                            onclick="currentSwitch(1)" alt="Black Glass">
+                                <h3>black glass</h3>
                     </div>
-                </div>
+                    <div class="column swt-col">
+                        <img class="switch-demo cursor" src="images/Touch-switch/AllSize/WhiteGlass.png" style="width:100%"
+                            onclick="currentSwitch(2)" alt="White glass">
+                            <h3>White glass</h3>
+                    </div>
+                    <div class="column swt-col">
+                        <img class="switch-demo cursor" src="images/Touch-switch/AllSize/Stone.png" style="width:100%"
+                            onclick="currentSwitch(3)" alt="Stone">
+                            <h3>Stone</h3>
+                    </div>
+                    <div class="column swt-col">
+                        <img class="switch-demo cursor" src="images/Touch-switch/AllSize/Wood.png" style="width:100%"
+                            onclick="currentSwitch(4)" alt="Wood">
+                            <h3>Wood</h3>
+                    </div>
+                    <div class="column swt-col">
+                        <img class="switch-demo cursor" src="images/Touch-switch/AllSize/Black.png" style="width:100%"
+                            onclick="currentSwitch(5)" alt="Black">
+                            <h3>Black</h3>
+                    </div>
+                    <div class="column swt-col">
+                        <img class="switch-demo cursor" src="images/Touch-switch/AllSize/White.png" style="width:100%"
+                            onclick="currentSwitch(6)" alt="White">
+                            <h3>White</h3>
+                    </div>
+                </div> 
             </div>
         </section><!-- hue -->
 
-
-        <section>
-            <div class="container vc-ctl rgb-vc t-of-lgt gal-sec">
-                <div class="myGallerySlides">
-                    <img src="images/RGB-driver/deep-ocean.jpg" style="width:100%">
-                </div>
-
-                <div class="myGallerySlides">
-                    <img src="images/RGB-driver/aurora.jpg" style="width:100%">
-                </div>
-
-                <div class="myGallerySlides">
-                    <img src="images/RGB-driver/firework.jpg" style="width:100%">
-                </div>
-
-                <div class="myGallerySlides">
-                    <img src="images/RGB-driver/jungle.jpg" style="width:100%">
-                </div>
-
-                <div class="myGallerySlides">
-                    <img src="images/RGB-driver/worm.jpg" style="width:100%">
-                </div>
-
-                <div class="myGallerySlides">
-                    <img src="images/RGB-driver/thunderstorm.jpg" style="width:100%">
-                </div>
+    
 
 
-                <div class="row gal-slid">
-                    <div class="column">
-                        <img class="demo cursor" src="images/RGB-driver/deep-ocean.jpg" style="width:100%"
-                            onclick="currentSlide(1)" alt="The Woods">
-                    </div>
-                    <div class="column">
-                        <img class="demo cursor" src="images/RGB-driver/aurora.jpg" style="width:100%"
-                            onclick="currentSlide(2)" alt="Cinque Terre">
-                    </div>
-                    <div class="column">
-                        <img class="demo cursor" src="images/RGB-driver/firework.jpg" style="width:100%"
-                            onclick="currentSlide(3)" alt="Mountains and fjords">
-                    </div>
-                    <div class="column">
-                        <img class="demo cursor" src="images/RGB-driver/jungle.jpg" style="width:100%"
-                            onclick="currentSlide(4)" alt="Northern Lights">
-                    </div>
-                    <div class="column">
-                        <img class="demo cursor" src="images/RGB-driver/worm.jpg" style="width:100%"
-                            onclick="currentSlide(5)" alt="Nature and sunrise">
-                    </div>
-                    <div class="column">
-                        <img class="demo cursor" src="images/RGB-driver/thunderstorm.jpg" style="width:100%"
-                            onclick="currentSlide(6)" alt="Snowy Mountains">
-                    </div>
-                </div>
-
-
-            </div><!-- gal-sec -->
-        </section>
-
-
-        <section class="r-r-ft"
-            style="background-image: url(images/Touch-switch/retro-fit.png); background-repeat: no-repeat; background-size: cover; background-position: center;">
+        <section class="r-r-ft">
             <div class="container-fluid">
                 <div class="row">
-                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 retrofit">
                         <p>Retrofit and Replaceable with Modern Switch and Old Switch in any existing home </p>
                         <p>No Additional wiring and works with existing wiring</p>
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"></div>
+
+
+
+
+                    <div class="img-comp-container">
+                        <div class="img-comp-img half-image">
+                            <img src="images/Touch-switch/OLDVSNEWSWITCH_01-min.jpg">
+                        </div>
+                        <div class="img-comp-img img-comp-overlay">
+                            <img src="images/Touch-switch/OLDVSNEWSWITCH_02-min.jpg">
+                        </div>
+                    </div>
+
+
                 </div>
             </div>
         </section><!-- r-r-ft -->
-
-
-
 
 
         <section class="works f-y-w" style="background: #f5f5f5;">
@@ -619,9 +720,8 @@
         <!-- works -->
 
 
-
         <section class="vc-ctl lght-senc"
-            style="background-image: url(images/Touch-switch/light-sensor.png); background-repeat: no-repeat; background-size: cover; background-position: center;">
+            style="background-image: url(images/Touch-switch/Ambient-min.jpg); background-repeat: no-repeat; background-size: cover; background-position: center;">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -636,7 +736,7 @@
 
 
         <section class="vc-ctl lght-senc av-sz"
-            style="background-image: url(images/Touch-switch/avail-size.png); background-repeat: no-repeat; background-size: cover; background-position: center;">
+            style="background-image: url(images/Touch-switch/avail-size.jpg); background-repeat: no-repeat; background-size: cover; background-position: center;">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
@@ -644,15 +744,78 @@
                     </div>
                 </div>
             </div>
+
+           <div class="container vc-ctl rgb-vc t-of-lgt gal-sec">
+                <div class="row all-switch">
+                <div class="allSizeSwitch">
+                    
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 switch-size"><img src="images/Touch-switch/AllSize/2M-White_Yellow_Glow.png" style="width:100%"></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 switch-size"><img src="images/Touch-switch/AllSize/2M_Plain_Black_Glass.png" style="width:100%"></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 switch-size"><img src="images/Touch-switch/AllSize/2M_Plain_Black_Stone.png" style="width:100%"></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 switch-size"><img src="images/Touch-switch/AllSize/2M_Plain_Black_Wood.png" style="width:100%"></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 switch-size"><img src="images/Touch-switch/AllSize/2M_Plain_White_Glass.png" style="width:100%"></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 switch-size"><img src="images/Touch-switch/AllSize/2M-Black_Blue_Glow.png" style="width:100%"></div>
+
+                </div>
+
+                <div class="allSizeSwitch">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 switch-size"><img src="images/Touch-switch/AllSize/4M_White_Yellow_Glow.png" style="width:100%"></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 switch-size"><img src="images/Touch-switch/AllSize/4M_Plain_Black_Glass.png" style="width:100%"></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 switch-size"><img src="images/Touch-switch/AllSize/4M_Plain_Black_Stone.png" style="width:100%"></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 switch-size"><img src="images/Touch-switch/AllSize/4M_Plain_Black_Wood.png" style="width:100%"></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 switch-size"><img src="images/Touch-switch/AllSize/4M_Plain_White_Glass.png" style="width:100%"></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 switch-size"><img src="images/Touch-switch/AllSize/4M_Black_Blue_Glow.png" style="width:100%"></div>
+                </div>
+
+                <div class="allSizeSwitch">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 switch-size"><img src="images/Touch-switch/AllSize/6M_White_Yellow_Glow.png" style="width:100%"></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 switch-size"><img src="images/Touch-switch/AllSize/6M_Plain_Black_Glass.png" style="width:100%"></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 switch-size"><img src="images/Touch-switch/AllSize/6M_Plain_Black_Stone.png" style="width:100%"></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 switch-size"><img src="images/Touch-switch/AllSize/6M_Plain_Black_Wood.png" style="width:100%"></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 switch-size"><img src="images/Touch-switch/AllSize/6M_Plain_White_Glass.png" style="width:100%"></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 switch-size"><img src="images/Touch-switch/AllSize/6M_Black_Blue_Glow.png" style="width:100%"></div>
+                </div>
+
+                <div class="allSizeSwitch">
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 switch-size"><img src="images/Touch-switch/AllSize/8M_White_Yellow_Glow.png" style="width:100%"></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 switch-size"><img src="images/Touch-switch/AllSize/8M_Plain_Black_Glass.png" style="width:100%"></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 switch-size"><img src="images/Touch-switch/AllSize/8M_Plain_Black_Stone.png" style="width:100%"></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 switch-size"><img src="images/Touch-switch/AllSize/8M_Plain_Black_Wood.png" style="width:100%"></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 switch-size"><img src="images/Touch-switch/AllSize/8M_Plain_White_Glass.png" style="width:100%"></div>
+                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 switch-size"><img src="images/Touch-switch/AllSize/8M_Black_Blue_Glow.png" style="width:100%"></div>
+                </div>
+            </div>
+
+                <div class="row Swt-size">
+                    <div class="column">
+                        <a class="SwitchSizeDemo cursor" href="javascript:void();" onclick="currentModuleSlide(1)">2 module</a>
+                    </div>
+                    <div class="column">
+                            <a class="SwitchSizeDemo cursor" href="javascript:void();" onclick="currentModuleSlide(2)">3/4 module</a>
+                    </div>
+                    <div class="column">
+                            <a class="SwitchSizeDemo cursor" href="javascript:void();" onclick="currentModuleSlide(3)">6 module</a>
+                    </div>
+                    <div class="column">
+                            <a class="SwitchSizeDemo cursor" href="javascript:void();" onclick="currentModuleSlide(4)">8 module</a>
+                    </div>
+                </div>
+
+
+            </div><!-- gal-sec -->
+
         </section><!-- av-sz -->
 
 
         <section class="vc-ctl lght-senc lv-fdbk"
-            style="background-image: url(images/Touch-switch/live-feedback.png); background-repeat: no-repeat; background-size: cover; background-position: center;">
-            <div class="container">
+            style="background-image: url(images/Touch-switch/Workswithzemoteapp1-min.jpg); background-repeat: no-repeat; background-size: cover; background-position: center;">
+            <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <h3>works with zemote app, live feedback</h3>
+                    </div>
+                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <img class="zmt-app-img" src="images/Touch-switch/Workswithzemoteapp2-min.png">
                     </div>
                 </div>
             </div>
@@ -660,14 +823,71 @@
 
 
 
+        <section>
+            <div class="container vc-ctl rgb-vc t-of-lgt gal-sec">
+                <div class="myGallerySlides">
+                    <img class="scene-imge" src="images/Touch-switch/scenec-gallery/1.BEDROOM1-min.jpg" style="width:100%">
+                </div>
+
+                <div class="myGallerySlides">
+                    <img class="scene-imge" src="images/Touch-switch/scenec-gallery/2.BEDROOM2-min.jpg" style="width:100%">
+                </div>
+
+                <div class="myGallerySlides">
+                    <img class="scene-imge" src="images/Touch-switch/scenec-gallery/3.BEDROOM3-min.jpg" style="width:100%">
+                </div>
+
+                <div class="myGallerySlides">
+                    <img class="scene-imge" src="images/Touch-switch/scenec-gallery/4.StudyRoom-min.jpg" style="width:100%">
+                </div>
+
+                <div class="myGallerySlides">
+                    <img class="scene-imge" src="images/Touch-switch/scenec-gallery/5.Bedroom-min.jpg" style="width:100%">
+                </div>
+
+                <div class="myGallerySlides">
+                    <img class="scene-imge" src="images/Touch-switch/scenec-gallery/6thImage-min.jpg" style="width:100%">
+                </div>
+
+
+                <div class="row gal-slid">
+                    <div class="column">
+                        <img class="demo cursor" src="images/Touch-switch/scenec-gallery/RoomSelcetionTabImages/1.BEDROOM1.png" style="width:100%"
+                            onclick="currentImageSlide(1)" alt="The Woods">
+                    </div>
+                    <div class="column">
+                        <img class="demo cursor" src="images/Touch-switch/scenec-gallery/RoomSelcetionTabImages/2.BEDROOM2.png" style="width:100%"
+                            onclick="currentImageSlide(2)" alt="Cinque Terre">
+                    </div>
+                    <div class="column">
+                        <img class="demo cursor" src="images/Touch-switch/scenec-gallery/RoomSelcetionTabImages/3.BEDROOM3.png" style="width:100%"
+                            onclick="currentImageSlide(3)" alt="Mountains and fjords">
+                    </div>
+                    <div class="column">
+                        <img class="demo cursor" src="images/Touch-switch/scenec-gallery/RoomSelcetionTabImages/4.StudyRoom.png" style="width:100%"
+                            onclick="currentImageSlide(4)" alt="Northern Lights">
+                    </div>
+                    <div class="column">
+                        <img class="demo cursor" src="images/Touch-switch/scenec-gallery/RoomSelcetionTabImages/5.Bedroom.png" style="width:100%"
+                            onclick="currentImageSlide(5)" alt="Nature and sunrise">
+                    </div>
+                    <div class="column">
+                        <img class="demo cursor" src="images/Touch-switch/scenec-gallery/RoomSelcetionTabImages/6thImage.png" style="width:100%"
+                            onclick="currentImageSlide(6)" alt="Snowy Mountains">
+                    </div>
+                </div>
+
+
+            </div><!-- gal-sec -->
+        </section>
+
+
         <section class="multi-acc mob-acc ctrl-aywy"
-            style="background-image: url(images/Touch-switch/ctrl-aywy.png); background-repeat: no-repeat; background-size: cover;">
+            style="background-image: url(images/Touch-switch/ctrl-aywy.jpg); background-repeat: no-repeat; background-size: cover;">
             <div class="container-fluid mlt-acc-cont">
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
-                        <h3>control from anywhere</h3>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut
-                            labore et dolore magna aliqua.</p>
+                        <h3>Limitless possibilities</h3>                       
                     </div>
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12 acc-mg"></div>
                 </div>
@@ -676,10 +896,11 @@
 
 
 
-        <section class="vc-ctl lght-senc lv-fdbk src-ctrl" style="background-color: #d7d7d7;">
+        <section class="vc-ctl lght-senc lv-fdbk src-ctrl"style="background-image: url(images/Touch-switch/SCENECONTROLLER-min.jpg); background-repeat: no-repeat; background-size: cover; background-position: center;">
             <div class="container">
                 <div class="row">
-                    <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12"></div>
+                    <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
                         <h3>any switch can be converted to the screen controller</h3>
                     </div>
                 </div>
@@ -687,7 +908,7 @@
         </section><!-- vc-ctl -->
 
         <section class="multi-acc mob-acc fire-res"
-            style="background-image: url(images/Touch-switch/fire-resistant.png); background-repeat: no-repeat; background-size: cover;">
+            style="background-image: url(images/Touch-switch/FIRERESISTANT-min.jpg); background-repeat: no-repeat; background-size: cover;">
             <div class="container-fluid mlt-acc-cont">
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -702,7 +923,7 @@
 
 
         <section class="arrang shk-prf"
-            style="background-image: url(images/Touch-switch/shock-proof.png); background-repeat: no-repeat; background-size: cover;">
+            style="background-image: url(images/Touch-switch/SHOCKPROOF-min.jpg); background-repeat: no-repeat; background-size: cover;">
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6 hidden-xs"></div>
@@ -718,7 +939,7 @@
 
 
         <section class="multi-acc mob-acc ctrl-aywy wet-hnd"
-            style="background-image: url(images/Touch-switch/wet-hands.jpg); background-repeat: no-repeat; background-size: cover;">
+            style="background-image: url(images/Touch-switch/WETHANDS-min.jpg); background-repeat: no-repeat; background-size: cover;">
             <div class="container-fluid mlt-acc-cont">
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -743,37 +964,7 @@
         </section>
 
 
-        <div id="owl-demo" class="owl-carousel owl-theme prd-sld">
-
-            <div class="item">
-                <img src="images/slider-img.png" alt="Owl Image">
-            </div>
-            <div class="item">
-                <img src="images/slider-img.png" alt="Owl Image">
-            </div>
-            <div class="item">
-                <img src="images/slider-img.png" alt="Owl Image">
-            </div>
-            <div class="item">
-                <img src="images/slider-img.png" alt="Owl Image">
-            </div>
-            <div class="item">
-                <img src="images/slider-img.png" alt="Owl Image">
-            </div>
-            <div class="item">
-                <img src="images/slider-img.png" alt="Owl Image">
-            </div>
-            <div class="item">
-                <img src="images/slider-img.png" alt="Owl Image" |>
-            </div>
-            <div class="item">
-                <img src="images/slider-img.png" alt="Owl Image">
-            </div>
-
-        </div>
-
-
-        <section class="document sur-doc">
+            <section class="document sur-doc">
             <div class="container">
                 <div class="row">
                     <div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
@@ -916,7 +1107,7 @@
                                 <h4>SUPPORT</h4>
                                 <ul class="list-icon">
                                     <li>
-                                        <a href="#">FAQs</a>
+                                        <a href="faq.html">FAQs</a>
                                     </li>
                                     <li>
                                         <a href="#">Videos</a>
@@ -944,7 +1135,7 @@
                                         <a href="#">Lighting</a>
                                     </li>
                                     <li>
-                                        <a href="#">Smart Switches</a>
+                                        <a href="switchboard-module.html">Smart Switches</a>
                                     </li>
                                     <li>
                                         <a href="#">Hub</a>
@@ -1101,47 +1292,22 @@
     </script>
 
 
-
-    <script>
-        var owl = $('.owl-carousel');
-        owl.owlCarousel({
-            items: 5,
-            loop: true,
-            margin: 10,
-            autoplay: true,
-            autoplayTimeout: 1000,
-            autoplayHoverPause: true
-        });
-        $('.play').on('click', function () {
-            owl.trigger('play.owl.autoplay', [1000])
-        })
-        $('.stop').on('click', function () {
-            owl.trigger('stop.owl.autoplay')
-        })
-    </script>
-
-
     <!-- chage image on hover -->
-
-
 
     <script>
         var slideIndex = 1;
         showSlides(slideIndex);
-
         function plusSlides(n) {
             showSlides(slideIndex += n);
         }
-
-        function currentSlide(n) {
+        function currentImageSlide(n) {
             showSlides(slideIndex = n);
         }
-
         function showSlides(n) {
             var i;
             var slides = document.getElementsByClassName("myGallerySlides");
             var dots = document.getElementsByClassName("demo");
-            var captionText = document.getElementById("caption");
+            var captionText = document.getElementById("captionImage");
             if (n > slides.length) { slideIndex = 1 }
             if (n < 1) { slideIndex = slides.length }
             for (i = 0; i < slides.length; i++) {
@@ -1157,7 +1323,67 @@
     </script>
 
 
-    <script src="js/main.js" charset="utf-8"></script>
+<!-- Switch change tab -->
+
+<script>
+    var slideSwitchIndex = 1;
+    showSwitchSlides(slideSwitchIndex);
+    function plusSwitchSlides(n) {
+        showSwitchSlides(slideSwitchIndex += n);
+    }
+    function currentSwitch(n) {
+        showSwitchSlides(slideSwitchIndex = n);
+    }
+    function showSwitchSlides(n) {
+        var i;
+        var slides = document.getElementsByClassName("mySwitchSlides");
+        var dots = document.getElementsByClassName("switch-demo");
+        var captionSwitchText = document.getElementById("caption");
+        if (n > slides.length) { slideSwitchIndex = 1 }
+        if (n < 1) { slideSwitchIndex = slides.length }
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideSwitchIndex - 1].style.display = "block";
+        dots[slideSwitchIndex - 1].className += " active";
+        captionSwitchText.innerHTML = dots[slideSwitchIndex - 1].alt;
+    }
+</script>
+
+
+<!-- All size switchs -->
+<script>
+    var slideModuleIndex = 1;
+    showModuleSlides(slideModuleIndex);
+    function plusModuleSlides(n) {
+        showModuleSlides(slideModuleIndex += n);
+    }
+    function currentModuleSlide(n) {
+        showModuleSlides(slideModuleIndex = n);
+    }
+    function showModuleSlides(n) {
+        var i;
+        var slides = document.getElementsByClassName("allSizeSwitch");
+        var dots = document.getElementsByClassName("SwitchSizeDemo");
+        var captionText = document.getElementById("captionModule");
+        if (n > slides.length) { slideModuleIndex = 1 }
+        if (n < 1) { slideModuleIndex = slides.length }
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideModuleIndex - 1].style.display = "block";
+        dots[slideModuleIndex - 1].className += " active";
+        captionText.innerHTML = dots[slideModuleIndex - 1].alt;
+    }
+</script>
+
+<script src="js/main.js" charset="utf-8"></script>
 
 
 <!-- Book a demo Modal -->
@@ -1190,9 +1416,30 @@
     }
 </script>
 
+<!--Customise your switch script-->
+<script>
+  // Show the first tab by default
+$('.tabs-stage div').hide();
+$('.tabs-stage div:first').show();
+$('.tabs-nav li:first').addClass('tab-active');
+
+// Change tab class and display content
+$('.tabs-nav a').on('click', function(event){
+  event.preventDefault();
+  $('.tabs-nav li').removeClass('tab-active');
+  $(this).parent().addClass('tab-active');
+  $('.tabs-stage div').hide();
+  $($(this).attr('href')).show();
+});
+</script>
 
 
 
+<!-- compare Slider -->
+<script>
+    /*Execute a function that will execute an image compare function for each element with the img-comp-overlay class:*/
+    initComparisons();
+</script>
 
 
 
